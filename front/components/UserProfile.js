@@ -1,6 +1,12 @@
 import React, { useCallback } from "react";
 import { Avatar, Button, Card } from "antd";
 import PropTypes from "prop-types";
+import styled from "styled-components";
+
+const StyledButton = styled(Button)`
+  display: block;
+  margin: 15px auto 0;
+`;
 
 const UserProfile = ({ setIsLoggedIn }) => {
   const onLogOut = useCallback(() => {
@@ -29,13 +35,13 @@ const UserProfile = ({ setIsLoggedIn }) => {
         title="jeje7"
         description="NodeBird에 오신것을 환영합니다."
       />
-      <Button onClick={onLogOut}>로그아웃</Button>
+      <StyledButton onClick={onLogOut}>로그아웃</StyledButton>
     </Card>
   );
 };
 
 UserProfile.propTypes = {
-  setIsLoggedIn: PropTypes.bool.isRequired,
+  setIsLoggedIn: PropTypes.func.isRequired,
 };
 
 export default UserProfile;
