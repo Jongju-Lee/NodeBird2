@@ -17,6 +17,9 @@ const LoginForm = ({ setIsLoggedIn }) => {
   const [id, onChangeId] = useInput("");
   const [password, onChangePassword] = useInput("");
 
+  // 회원가입 페이지 만들기 (custom hook)
+  // 8분부터 시청
+
   const onSubmitForm = useCallback(() => {
     console.log(id, password);
     setIsLoggedIn(true);
