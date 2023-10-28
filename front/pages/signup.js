@@ -1,18 +1,47 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useState } from "react";
 import Head from "next/head";
-import { Form, Input } from "antd";
+import { Button, Checkbox, Form, Input } from "antd";
+import styled from "styled-components";
 
 // components
 import AppLayout from "../components/AppLayout";
+import useInput from "../hooks/useInput";
+
+const ErrorMessage = styled.div`
+  color: red;
+`;
 
 const Signup = () => {
-  const onSubmit = useCallback(() => {}, []);
+  const [id, onChangeId] = useInput("");
+  const [nickname, onChangeNickname] = useInput("");
 
-  const onChangeId = useCallback(() => {}, []);
+  const [password, onChangePassword] = useInput("");
+  const [passwordCheck, setPasswordCheck] = useState("");
+  const [passwordError, setPasswordError] = useState(false);
+  const onChangePasswordCheck = useCallback(
+    (e) => {
+      setPasswordCheck(e.target.value);
+      setPasswordError(e.target.value !== password);
+    },
+    [password]
+  );
 
-  const onChangeNick = useCallback(() => {}, []);
+  const [term, setTerm] = useState("");
+  const [termError, setTermError] = useState(false);
+  const onChangeTerm = useCallback((e) => {
+    setTerm(e.target.checked);
+    setTermError(false);
+  }, []);
 
-  const onChangePassword = useCallback(() => {}, []);
+  const onSubmit = useCallback(() => {
+    if (password !== passwordCheck) {
+      return setPasswordError(true);
+    }
+    if (!term) {
+      return setTermError(true);
+    }
+    console.log(id, nickname, password);
+  }, [password, passwordCheck, term]);
 
   return (
     <AppLayout>
@@ -56,10 +85,29 @@ const Signup = () => {
             required
             onChange={onChangePasswordCheck}
           />
+          {passwordError && (
+            <ErrorMessage>비밀번호가 일치하지 않습니다.</ErrorMessage>
+          )}
+        </div>
+        <div>
+          <Checkbox name="user-term" checked={term} onChange={onChangeTerm}>
+            ...를 동의 합니다.
+          </Checkbox>
+          {termError && (
+            <ErrorMessage>약관에 동의 하셔야 가입이 가능합니다.</ErrorMessage>
+          )}
+        </div>
+        <div>
+          <Button type="primary" htmlType="submit">
+            가입하기
+          </Button>
         </div>
       </Form>
     </AppLayout>
   );
 };
+
+// 리덕스 원리와 불변성
+// 처음부터 시청
 
 export default Signup;
