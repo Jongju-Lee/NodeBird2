@@ -107,7 +107,4 @@ const Signup = () => {
   );
 };
 
-// 리덕스 원리와 불변성
-// 처음부터 시청
-
 export default Signup;
