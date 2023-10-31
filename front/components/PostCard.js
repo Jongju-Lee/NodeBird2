@@ -1,5 +1,5 @@
-import { Avatar, Button, Card, Popover } from "antd";
-import React, { useState } from "react";
+import { Avatar, Button, Card, Comment, List, Popover } from "antd";
+import React, { useCallback, useState } from "react";
 import PropTypes from "prop-types";
 import {
   EllipsisOutlined,
@@ -11,6 +11,8 @@ import {
 import { useSelector } from "react-redux";
 import PostImages from "./PostImages";
 import styled from "styled-components";
+import CommentForm from "./CommentForm";
+import PostCardContent from "./PostCardContent";
 
 const StyledDiv = styled.div`
   margin-bottom: 20px;
@@ -19,12 +21,17 @@ const StyledDiv = styled.div`
 const PostCard = ({ post }) => {
   const [liked, setLiked] = useState(false);
   const [commentFormOpened, setCommentFormOpened] = useState(false);
-  const id = useSelector((state) => state.user.me?.id);
+  const onToggleLike = useCallback(() => {
+    setLiked((prev) => !prev);
+  }, []);
 
+  const onToggleComment = useCallback(() => {
+    setCommentFormOpened((prev) => !prev);
+  }, []);
+
+  const id = useSelector((state) => state.user.me?.id);
   // const { me } = useSelector((state) => state.user);
   // const id = me?.id;
-
-  // 게시글 구현하기 13분부터
 
   return (
     <StyledDiv>
@@ -32,8 +39,16 @@ const PostCard = ({ post }) => {
         cover={post.Images[0] && <PostImages images={post.Images} />}
         actions={[
           <RetweetOutlined key="retweet" />,
-          <HeartOutlined key="heart" />,
-          <MessageOutlined key="comment" />,
+          liked ? (
+            <HeartTwoTone
+              twoToneColor="#eb2f96"
+              key="heart"
+              onClick={onToggleLike}
+            />
+          ) : (
+            <HeartOutlined key="heart" onClick={onToggleLike} />
+          ),
+          <MessageOutlined key="comment" onClick={onToggleComment} />,
           <Popover
             key="more"
             content={
@@ -56,11 +71,28 @@ const PostCard = ({ post }) => {
         <Card.Meta
           avatar={<Avatar>{post.User.nickname[0]}</Avatar>}
           title={post.User.nickname}
-          description={post.content}
+          description={<PostCardContent postData={post.content} />}
         />
       </Card>
-      {/* <CommentForm />
-      <Comments /> */}
+      {commentFormOpened && (
+        <div>
+          <CommentForm post={post} />
+          <List
+            header={`${post.Comments.length}개의 댓글`}
+            itemLayout="horizontal"
+            dataSource={post.Comments}
+            renderItem={(item) => (
+              <li>
+                <Comment
+                  author={item.User.nickname}
+                  avatar={<Avatar>item.User.nickname[0]</Avatar>}
+                  content={item.content}
+                />
+              </li>
+            )}
+          />
+        </div>
+      )}
     </StyledDiv>
   );
 };
