@@ -1,8 +1,8 @@
 import React, { useCallback } from "react";
 import { Avatar, Button, Card } from "antd";
 import styled from "styled-components";
-import { useDispatch } from "react-redux";
-import { logoutAction } from "../reducers/user";
+import { useDispatch, useSelector } from "react-redux";
+import { logoutRequestAction } from "../reducers/user";
 
 const StyledButton = styled(Button)`
   display: block;
@@ -11,8 +11,9 @@ const StyledButton = styled(Button)`
 
 const UserProfile = () => {
   const dispatch = useDispatch();
+  const { me, isLoggingOut } = useSelector((state) => state.user);
   const onLogOut = useCallback(() => {
-    dispatch(logoutAction());
+    dispatch(logoutRequestAction());
   }, []);
 
   return (
@@ -33,11 +34,13 @@ const UserProfile = () => {
       ]}
     >
       <Card.Meta
-        avatar={<Avatar>종주</Avatar>}
-        title="jeje7"
+        avatar={<Avatar>{me.nickname[0]}</Avatar>}
+        title={me.nickname}
         description="NodeBird에 오신것을 환영합니다."
       />
-      <StyledButton onClick={onLogOut}>로그아웃</StyledButton>
+      <StyledButton onClick={onLogOut} loading={isLoggingOut}>
+        로그아웃
+      </StyledButton>
     </Card>
   );
 };
