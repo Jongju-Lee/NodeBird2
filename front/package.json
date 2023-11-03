@@ -11,8 +11,11 @@
   "license": "ISC",
   "dependencies": {
     "@ant-design/icons": "^4.8.1",
+    "@faker-js/faker": "^8.2.0",
     "antd": "^4.24.14",
     "axios": "^0.27.2",
+    "faker": "^6.6.6",
+    "immer": "^10.0.3",
     "next": "^9.5.5",
     "next-redux-wrapper": "^6.0.2",
     "prop-types": "^15.8.1",
