@@ -5,7 +5,7 @@ import { faker } from "@faker-js/faker";
 export const initialState = {
   mainPosts: [],
   imagePaths: [],
-  hasMorePost: true,
+  hasMorePosts: true,
   loadPostsLoading: false,
   loadPostsDone: false,
   loadPostsError: null,
@@ -45,8 +45,6 @@ export const generateDummyPost = (number) =>
         },
       ],
     }));
-
-initialState.mainPosts = initialState.mainPosts.concat(generateDummyPost(10));
 
 export const LOAD_POSTS_REQUEST = "LOAD_POSTS_REQUEST";
 export const LOAD_POSTS_SUCCESS = "LOAD_POSTS_SUCCESS";
@@ -107,7 +105,7 @@ const reducer = (state = initialState, action) => {
         draft.loadPostsLoading = false;
         draft.loadPostsDone = true;
         draft.mainPosts = action.data.concat(draft.mainPosts);
-        draft.hsaMorePosts = draft.mainPosts.length < 50;
+        draft.hasMorePosts = draft.mainPosts.length < 50;
         break;
       case LOAD_POSTS_FAILURE:
         draft.loadPostsLoading = false;

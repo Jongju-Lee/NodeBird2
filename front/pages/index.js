@@ -3,18 +3,40 @@ import AppLayout from "../components/AppLayout";
 import { useDispatch, useSelector } from "react-redux";
 import PostForm from "../components/PostForm";
 import PostCard from "../components/PostCard";
-import { LOAD_POST_REQUEST } from "../reducers/post";
+import { LOAD_POSTS_REQUEST } from "../reducers/post";
 
 const Home = () => {
   const dispatch = useDispatch();
+  const { me } = useSelector((state) => state.user);
+  const { mainPosts, hasMorePosts, loadPostsLoading } = useSelector(
+    (state) => state.post
+  );
+
   useEffect(() => {
     dispatch({
-      type: LOAD_POST_REQUEST,
+      type: LOAD_POSTS_REQUEST,
     });
   }, []);
 
-  const { me } = useSelector((state) => state.user);
-  const { mainPosts } = useSelector((state) => state.post);
+  useEffect(() => {
+    function onScroll() {
+      const scrollY = window.scrollY;
+      const clientHeight = document.documentElement.clientHeight;
+      const scrollHeight = document.documentElement.scrollHeight;
+      if (scrollY + clientHeight > scrollHeight - 300) {
+        if (hasMorePosts && !loadPostsLoading) {
+          dispatch({
+            type: LOAD_POSTS_REQUEST,
+          });
+        }
+      }
+    }
+    window.addEventListener("scroll", onScroll);
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+    };
+  }, [hasMorePosts, loadPostsLoading]);
+
   return (
     <AppLayout>
       {me && <PostForm />}
