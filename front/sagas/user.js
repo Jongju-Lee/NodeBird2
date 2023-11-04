@@ -80,12 +80,13 @@ function followAPI() {
   return axios.post("/api/follow");
 }
 
-function* follow() {
+function* follow(action) {
   try {
     // const result = yield call(followAPI);
     yield delay(1000);
     yield put({
       type: FOLLOW_SUCCESS,
+      data: action.data,
     });
   } catch (err) {
     yield put({
@@ -99,12 +100,13 @@ function unfollowAPI() {
   return axios.post("/api/unfollow");
 }
 
-function* unfollow() {
+function* unfollow(action) {
   try {
     // const result = yield call(unfollowAPI);
     yield delay(1000);
     yield put({
       type: UNFOLLOW_SUCCESS,
+      data: action.data,
     });
   } catch (err) {
     yield put({
