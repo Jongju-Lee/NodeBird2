@@ -25,4 +25,4 @@ module.exports = (sequelize, DataTypes) => {
   return Post;
 };
 // 2023 11월 6일
-// 시퀄라이즈 관계 설정하기 (10분쯤부터 다시보기)
+// 시퀄라이즈 sync + nodemon
