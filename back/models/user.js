@@ -28,14 +28,14 @@ module.exports = (sequelize, DataTypes) => {
     db.User.hasMany(db.Comment);
     db.User.belongsToMany(db.Post, { through: "Like", as: "Liked" });
     db.User.belongsToMany(db.User, {
-      through: "Follow",
-      as: "Followers",
-      foreignKey: "FollowingId",
+      through: "Follow", // through는 테이블 이름을 바꿔줌
+      as: "Followers", // as는 같은 데이터의 이름을 구별할 수 있게 넣어줌
+      foreignKey: "FollowingId", // foreignKey는 중간테이블에서 같은 데이터의 이름을 구별할 수 있게 바꿔준다.
     });
     db.User.belongsToMany(db.User, {
       through: "Follow",
-      as: "wiilo",
-      foreignKey: "FollowingId",
+      as: "Followings",
+      foreignKey: "FollowerId",
     });
   };
   return User;

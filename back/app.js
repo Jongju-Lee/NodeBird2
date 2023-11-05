@@ -1,7 +1,10 @@
 const express = require("express");
 const postRouter = require("./routes/post");
-
+const db = require("./models");
 const app = express();
+db.sequelize.sync().then(() => {
+  console.log("DB연결 성공");
+});
 
 // app.get => 가져오다
 // app.post => 생성하다 (가져오는것과 수정해야하는것 복합적이라 애매한것은 post사용)

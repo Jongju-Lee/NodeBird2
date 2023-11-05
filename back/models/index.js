@@ -1,5 +1,3 @@
-"use strict";
-
 // const fs = require('fs');
 // const path = require('path');
 // const Sequelize = require('sequelize');
@@ -30,6 +28,7 @@
 //     const model = require(path.join(__dirname, file))(sequelize, Sequelize.DataTypes);
 //     db[model.name] = model;
 //   });
+"use strict";
 
 const Sequelize = require("sequelize");
 const env = process.env.NODE_ENV || "development";
@@ -42,6 +41,12 @@ const sequelize = new Sequelize(
   config.password,
   config
 );
+
+db.Comment = require("./comment")(sequelize, Sequelize);
+db.Hashtag = require("./hashtag")(sequelize, Sequelize);
+db.Image = require("./image")(sequelize, Sequelize);
+db.Post = require("./post")(sequelize, Sequelize);
+db.User = require("./user")(sequelize, Sequelize);
 
 Object.keys(db).forEach((modelName) => {
   if (db[modelName].associate) {
