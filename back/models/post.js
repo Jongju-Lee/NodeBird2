@@ -5,7 +5,7 @@ module.exports = (sequelize, DataTypes) => {
       // MySQL에는 posts로 테이블 생성
       // id는 기본적으로 들어있음 1, 2, 3, 4... 순서대로 올라감.
       content: {
-        type: DataTypes.Text,
+        type: DataTypes.TEXT,
         allowNull: false,
       },
     },
@@ -16,7 +16,7 @@ module.exports = (sequelize, DataTypes) => {
   );
   Post.associate = (db) => {
     db.Post.belongsTo(db.User);
-    db.Post.belongsToMany(db.Hashtag);
+    db.Post.belongsToMany(db.Hashtag, { through: "PostHashtag" });
     db.Post.hasMany(db.Comment);
     db.Post.hasMany(db.Image);
     db.Post.belongsToMany(db.User, { through: "Like", as: "Likers" }); // through의 value값이 중간테이블 이름이다.
@@ -24,5 +24,3 @@ module.exports = (sequelize, DataTypes) => {
   };
   return Post;
 };
-// 2023 11월 6일
-// 시퀄라이즈 sync + nodemon

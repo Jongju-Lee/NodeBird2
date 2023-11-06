@@ -14,7 +14,8 @@ module.exports = (sequelize, DataTypes) => {
       collate: "utf8mb4_general_ci", // mb4 넣어줘야 이모티콘 사용 가능
     }
   );
-  Hashtag.associate = (db) => {};
-  db.Hashtag.belongsToMany(db.Post);
+  Hashtag.associate = (db) => {
+    db.Hashtag.belongsToMany(db.Post, { through: "PostHashtag" });
+  };
   return Hashtag;
 };
